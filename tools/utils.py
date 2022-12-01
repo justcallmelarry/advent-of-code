@@ -52,7 +52,6 @@ def words(s: str) -> list[str]:
 
 
 def get_sample(day: int, year: int) -> str:
-    year = int(os.environ["AOCYEAR"])
     input_destination_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         str(year),

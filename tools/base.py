@@ -1,4 +1,5 @@
-import heapq
+import collections
+import os
 import sys
 
 import injection
@@ -9,10 +10,7 @@ import utils
 def main(_input: str, sample_input: bool = False) -> str:
     result: str | int = ""
 
-    elves_input = _input.split("\n\n")
-    elves = [sum(utils.ints(elf)) for elf in elves_input]
-
-    result = sum(heapq.nlargest(3, elves))
+    # code here
 
     return str(result)
 

@@ -1,18 +1,11 @@
-import os
 import sys
 
+import injection
 import utils
 
 
-def get_input(sample: bool = False) -> str:
-    year, day = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 2)[-2:]
-    if sample:
-        return utils.get_sample(day=day, year=int(year))
-
-    return utils.get_actual(day=int(day), year=int(year))
-
-
-def main(_input: str) -> str:
+@injection.input_injection
+def main(_input: str, sample_input: bool = False) -> str:
     result: str | int = ""
 
     elves_input = _input.split("\n\n")
@@ -24,4 +17,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    print(main(get_input(sample=True if "--sample" in sys.argv else False)))
+    print(main(True if "--sample" in sys.argv else False))
