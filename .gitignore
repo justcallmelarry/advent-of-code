@@ -1,3 +1,4 @@
 token.txt
 .mypy_cache/
 *.pyc
+.vscode/
