@@ -14,18 +14,11 @@ def get_input(sample: bool = False) -> str:
 
 def main(_input: str) -> str:
     result: str | int = ""
+
+    elves_input = _input.split("\n\n")
     elves = []
-
-    current_elf = 0
-    for i in _input.splitlines():
-        if i:
-            current_elf += int(i)
-        else:
-            elves.append(current_elf)
-            current_elf = 0
-
-    if current_elf:
-        elves.append(current_elf)
+    for elf in elves_input:
+        elves.append(sum([int(i) for i in elf.splitlines()]))
 
     result = max(elves)
 
