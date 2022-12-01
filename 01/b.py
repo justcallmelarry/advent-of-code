@@ -17,9 +17,7 @@ def main(_input: str) -> str:
     result: str | int = ""
 
     elves_input = _input.split("\n\n")
-    elves = []
-    for elf in elves_input:
-        elves.append(sum([int(i) for i in elf.splitlines()]))
+    elves = [sum(utils.ints(elf)) for elf in elves_input]
 
     result = sum(heapq.nlargest(3, elves))
 
