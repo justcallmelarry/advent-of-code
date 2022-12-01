@@ -51,9 +51,11 @@ def words(s: str) -> list[str]:
     return re.findall(r"[a-zA-Z]+", s)
 
 
-def get_sample(day: int) -> str:
+def get_sample(day: int, year: int) -> str:
+    year = int(os.environ["AOCYEAR"])
     input_destination_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        str(year),
         f"{day}".zfill(2),
         "input.sample",
     )
@@ -65,9 +67,10 @@ def get_sample(day: int) -> str:
         sys.exit(1)
 
 
-def get_actual(day: int | None = None, year: int | None = None) -> str:
+def get_actual(day: int, year: int) -> str:
     input_destination_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        str(year),
         f"{day}".zfill(2),
         "input.user",
     )

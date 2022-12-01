@@ -5,11 +5,11 @@ import utils
 
 
 def get_input(sample: bool = False) -> str:
-    day = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[-1]
+    year, day = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 2)[-2:]
     if sample:
-        return utils.get_sample(day=day)
+        return utils.get_sample(day=day, year=int(year))
 
-    return utils.get_actual(day=int(day), year=2022)
+    return utils.get_actual(day=int(day), year=int(year))
 
 
 def main(_input: str) -> str:
