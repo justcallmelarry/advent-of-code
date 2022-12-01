@@ -1,6 +1,5 @@
 import importlib
 import os
-import sys
 import webbrowser
 from datetime import date
 from shutil import copyfile
@@ -26,7 +25,16 @@ def new(year: int, day: int) -> None:
         os.makedirs(day_path)
         dest_path_file_name = os.path.join(day_path, "a.py")
         if not os.path.exists(dest_path_file_name):
-            copyfile("tools/base.py", dest_path_file_name)
+            copyfile("templates/base.py", dest_path_file_name)
+
+        test_dest_path_file_name = os.path.join(
+            os.path.dirname(__file__),
+            "tests",
+            str(year),
+            f"test_{year}_{str(day).zfill(2)}.py",
+        )
+        if not os.path.exists(test_dest_path_file_name):
+            copyfile("templates/test.py", dest_path_file_name)
 
     webbrowser.open(f"https://adventofcode.com/{year}/day/{day}")
 
