@@ -51,6 +51,20 @@ def words(s: str) -> list[str]:
     return re.findall(r"[a-zA-Z]+", s)
 
 
+def get_sample(day: int) -> str:
+    input_destination_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        f"{day}".zfill(2),
+        "input.sample",
+    )
+    try:
+        with open(input_destination_path) as sample_input:
+            return sample_input.read()
+    except FileNotFoundError:
+        print("no sample file saved")
+        sys.exit(1)
+
+
 def get_actual(day: int | None = None, year: int | None = None) -> str:
     input_destination_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -58,8 +72,8 @@ def get_actual(day: int | None = None, year: int | None = None) -> str:
         "input.user",
     )
     try:
-        actual_input = open(input_destination_path).read()
-        return actual_input
+        with open(input_destination_path) as actual_input:
+            return actual_input.read()
     except FileNotFoundError:
         pass
     from pathlib import Path
