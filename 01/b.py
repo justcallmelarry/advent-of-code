@@ -1,3 +1,4 @@
+import heapq
 import os
 import sys
 
@@ -20,9 +21,7 @@ def main(_input: str) -> str:
     for elf in elves_input:
         elves.append(sum([int(i) for i in elf.splitlines()]))
 
-    elves.sort()
-
-    result = sum(elves[-3:])
+    result = sum(heapq.nlargest(3, elves))
 
     return str(result)
 
