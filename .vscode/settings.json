@@ -1,0 +1,13 @@
+{
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/tools"
+    ],
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/tools"
+    ],
+    "python.defaultInterpreterPath": "${env:HOME}/.venvs/advent-of-code-2022/bin/python",
+    "python.envFile": "${workspaceFolder}/.vscode/.env",
+    "python.terminal.activateEnvironment": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false
+}

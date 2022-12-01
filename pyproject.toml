@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "advent-of-code-2022"
+version = "0.1.0"
+description = ""
+authors = ["Lauri Vuorela <lauri.vuorela@gmail.com>"]
+readme = "README.md"
+packages = [{include = "advent_of_code_2022"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+flake8 = "^6.0.0"
+flake8-black = "^0.3.5"
+isort = "^5.10.1"
+flake8-isort = "^5.0.3"
+flake8-pyproject = "^1.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target_version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.flake8]
+ignore = ["E501", "W503", "E231"]
+exclude = [".git", "__pycache__", "old", "build", "dist", ".vscode", ".pytest_cache", ".mypy_cache", ".env"]
