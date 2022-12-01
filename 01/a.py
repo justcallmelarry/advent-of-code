@@ -24,6 +24,9 @@ def main(_input: str) -> str:
             elves.append(current_elf)
             current_elf = 0
 
+    if current_elf:
+        elves.append(current_elf)
+
     result = max(elves)
 
     return str(result)
