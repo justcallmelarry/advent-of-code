@@ -24,6 +24,9 @@ def score(opp: int, me: int) -> int:
 def main(_input: str, sample_input: bool = False) -> str:
     result: int = 0
 
+    # as we are lucky enough that the chars are in order we can just use ord()
+    # then reset to the first char of the sequence (giving the choices the values of 0,1,2 respectively)
+    # if order would be different, just assign them 0,1,2 with a dict or similar
     ord_a = ord("A")
     ord_x = ord("X")
 
