@@ -3,48 +3,31 @@ import sys
 import injection
 
 
-def game_points(own: str, opp: str) -> int:
-    if opp == own:
-        return 3
+def score(opp: int, me: int) -> int:
+    # if opp == 1 value lower than me -> loss
+    if (opp - 1) % 3 == me:
+        return me + 1
 
-    if own == "r" and opp == "s":
-        return 6
-    if own == "s" and opp == "p":
-        return 6
-    if own == "p" and opp == "r":
-        return 6
+    # if me == 1 value lower than opp -> win
+    elif (me - 1) % 3 == opp:
+        return me + 7
 
-    return 0
-
-
-def get_points(a: str) -> int:
-    if a == "r":
-        return 1
-    elif a == "p":
-        return 2
-    elif a == "s":
-        return 3
-    raise Exception
+    # draw
+    return me + 4
 
 
 @injection.input_injection
 def main(_input: str, sample_input: bool = False) -> str:
     result: str | int = 0
 
-    hand_map = {
-        "A": "r",
-        "B": "p",
-        "C": "s",
-        "X": "r",
-        "Y": "p",
-        "Z": "s",
-    }
+    ord_a = ord("A")
+    ord_x = ord("X")
 
     total_score = 0
     for game in _input.splitlines():
-        opp, own = game.split()
+        opp, me = game.split()
 
-        total_score += game_points(hand_map[own], hand_map[opp]) + get_points(hand_map[own])
+        total_score += score(ord(opp) - ord_a, ord(me) - ord_x)
 
     result = total_score
     return str(result)

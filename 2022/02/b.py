@@ -3,73 +3,34 @@ import sys
 import injection
 
 
-def get_hand(opp: str, instruction: str) -> str:
-    instruction = instruction.lower()
-    if instruction == "x":
-        if opp == "r":
-            return "s"
-        if opp == "s":
-            return "p"
-        if opp == "p":
-            return "r"
+def score(opp: int, me: int) -> int:
+    # if opp == 1 value lower than me -> loss
+    if (opp - 1) % 3 == me:
+        return me + 1
 
-    elif instruction == "y":
-        return opp
+    # if me == 1 value lower than opp -> win
+    elif (me - 1) % 3 == opp:
+        return me + 7
 
-    elif instruction == "z":
-        if opp == "r":
-            return "p"
-        if opp == "s":
-            return "r"
-        if opp == "p":
-            return "s"
-
-    raise Exception("hand-exception")
-
-
-def game_points(own: str, opp: str) -> int:
-    if opp == own:
-        return 3
-
-    if own == "r" and opp == "s":
-        return 6
-    if own == "s" and opp == "p":
-        return 6
-    if own == "p" and opp == "r":
-        return 6
-
-    return 0
-
-
-def get_points(a: str) -> int:
-    if a == "r":
-        return 1
-    elif a == "p":
-        return 2
-    elif a == "s":
-        return 3
-    raise Exception
+    # draw
+    return me + 4
 
 
 @injection.input_injection
 def main(_input: str, sample_input: bool = False) -> str:
     result: str | int = 0
 
-    hand_map = {
-        "A": "r",
-        "B": "p",
-        "C": "s",
-        "X": "r",
-        "Y": "p",
-        "Z": "s",
-    }
+    ord_a = ord("A")
+    ord_x = ord("X")
 
     total_score = 0
     for game in _input.splitlines():
         opp, instruction = game.split()
-        own = get_hand(hand_map[opp], instruction)
 
-        total_score += game_points(own, hand_map[opp]) + get_points(own)
+        # add opp value together with the instruction value and figure out the move before it
+        me = (ord(opp) - ord_a + ord(instruction) - ord_x - 1) % 3
+
+        total_score += score(ord(opp) - ord_a, me)
 
     result = total_score
     return str(result)
