@@ -1,10 +1,10 @@
 import sys
 
-import injection
 import utils
+from injection import input_injection
 
 
-@injection.input_injection
+@input_injection
 def main(_input: str, sample_input: bool = False) -> str:
     result: int = 0
 

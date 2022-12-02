@@ -1,7 +1,7 @@
 import sys
 from collections import Counter
 
-import injection
+from injection import input_injection
 
 
 def score(opp: int, me: int) -> int:
@@ -20,7 +20,7 @@ def score(opp: int, me: int) -> int:
     return me + 4
 
 
-@injection.input_injection
+@input_injection
 def main(_input: str, sample_input: bool = False) -> str:
     result: int = 0
 
