@@ -66,6 +66,14 @@ def get_sample(day: int, year: int) -> str:
         sys.exit(1)
 
 
+def get_token() -> str:
+    from pathlib import Path
+
+    token_path = Path(__file__).parent.parent / "token.txt"
+    with open(token_path) as f:
+        return f.read().strip()
+
+
 def get_actual(day: int, year: int) -> str:
     input_destination_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -78,21 +86,6 @@ def get_actual(day: int, year: int) -> str:
             return actual_input.read()
     except FileNotFoundError:
         pass
-    from pathlib import Path
-
-    # let's try grabbing it
-    search_path = Path(".").resolve()
-    try:
-        if day is None:
-            day = int(search_path.name)
-        if year is None:
-            year = int(search_path.parent.name)
-    except ValueError:
-        print("Can't get day and year.")
-        print("Backup: save 'input.user' into the same folder as this script.")
-        return ""
-
-    print(f"{year} day {day} input not found.")
 
     # is it time?
     from datetime import datetime, timedelta, timezone
@@ -105,25 +98,13 @@ def get_actual(day: int, year: int) -> str:
         print(f"Remaining time until unlock: {delta}")
         return ""
 
-    while (not list(search_path.glob("*/token.txt"))) and search_path.parent != search_path:
-        search_path = search_path.parent
-
-    token_files = list(search_path.glob("*/token.txt"))
-    if not token_files:
-        assert search_path.parent == search_path
-        print("Can't find token.txt in a parent directory.")
-        print("Backup: save 'input.user' into the same folder as this script.")
-        return ""
-
-    with token_files[0].open() as f:
-        token = f.read().strip()
-
     # importing requests takes a long time...
     # let's do it without requests.
     import shutil
     import urllib.error
     import urllib.request
 
+    token = get_token()
     opener = urllib.request.build_opener()
     opener.addheaders = [
         ("Cookie", f"session={token}"),
