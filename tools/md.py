@@ -5,11 +5,11 @@ import utils
 from bs4 import BeautifulSoup
 
 
-def get_url(year: int, day: int) -> str:
+def _get_url(year: int, day: int) -> str:
     return f"https://adventofcode.com/{year}/day/{day}"
 
 
-def get_response(url: str) -> httpx.Response:
+def _get_response(url: str) -> httpx.Response:
     response = httpx.get(url, cookies={"session": utils.get_token()})
 
     if response.status_code != 200:
@@ -21,12 +21,8 @@ def get_response(url: str) -> httpx.Response:
     return response
 
 
-def get_html(year: int, day: int) -> str:
-    return get_response(get_url(year, day)).text
-
-
-def get_input(year: int, day: int) -> str:
-    return get_response(get_url(year, day) + "/input").text
+def _get_html(year: int, day: int) -> str:
+    return _get_response(_get_url(year, day)).text
 
 
 # Simplification of https://github.com/dlon/html2markdown/blob/master/html2markdown.py
@@ -92,9 +88,9 @@ def html_tags_to_markdown(tag: Any, is_first_article: bool) -> None:
 
 
 def get_markdown(year: int, day: int) -> str:
-    soup = BeautifulSoup(get_html(year, day), features="html.parser")
+    soup = BeautifulSoup(_get_html(year, day), features="html.parser")
 
-    url = get_url(year, day)
+    url = _get_url(year, day)
     content = f"# {year}-{str(day).zfill(2)}\nLink: {url}\n\n"
 
     articles = soup.body.main.findAll("article", recursive=False)
@@ -102,7 +98,7 @@ def get_markdown(year: int, day: int) -> str:
 
     for i, article in enumerate(articles):
         html_tags_to_markdown(article, i == 0)
-        content += "".join([tag.string for tag in article.contents])
+        content += "".join([tag.string for tag in article.contents if tag.string])
         if len(puzzle_answers) >= i + 1:
             answer = (
                 str(puzzle_answers[i])

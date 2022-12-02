@@ -98,36 +98,16 @@ def get_actual(day: int, year: int) -> str:
         print(f"Remaining time until unlock: {delta}")
         return ""
 
-    # importing requests takes a long time...
-    # let's do it without requests.
-    import shutil
-    import urllib.error
-    import urllib.request
+    import httpx
 
-    token = get_token()
-    opener = urllib.request.build_opener()
-    opener.addheaders = [
-        ("Cookie", f"session={token}"),
-        ("User-Agent", "python-requests/2.19.1"),
-    ]
-    print("Sending request...")
     url = f"https://adventofcode.com/{year}/day/{day}/input"
+    response = httpx.get(url, cookies={"session": get_token()})
+    response.raise_for_status()
+    with open(input_destination_path, "w") as input_file:
+        input_file.write(response.text)
 
-    try:
-        with opener.open(url) as r:
-            with open(input_destination_path, "wb") as f:
-                shutil.copyfileobj(r, f)
-            print("Input saved!")
-            return open(input_destination_path).read()
-    except urllib.error.HTTPError as e:
-        status_code = e.getcode()
-        if status_code == 400:
-            print("Auth failed!")
-        elif status_code == 404:
-            print("Day is not out yet????")
-        else:
-            print(f"Request failed with code {status_code}??")
-        return ""
+    print("Input saved!")
+    return response.text
 
 
 def manhattan_dist(coords: tuple[int, int], target_coords: tuple[int, int]) -> int:
