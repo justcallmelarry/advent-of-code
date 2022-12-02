@@ -1,5 +1,4 @@
-import collections
-import os
+import math
 import sys
 
 import injection
@@ -7,7 +6,7 @@ import utils
 
 
 def get_fuel(x: int) -> int:
-    return int(x / 3) - 2
+    return math.floor(x / 3) - 2
 
 
 @injection.input_injection

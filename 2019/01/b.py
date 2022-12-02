@@ -1,3 +1,4 @@
+import math
 import sys
 
 import injection
@@ -5,7 +6,7 @@ import utils
 
 
 def get_fuel(x: int) -> int:
-    fuel = int(x / 3) - 2
+    fuel = math.floor(x / 3) - 2
     if fuel < 0:
         return 0
     return fuel
