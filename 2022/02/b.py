@@ -22,12 +22,11 @@ def score(opp: int, me: int) -> int:
 
 @injection.input_injection
 def main(_input: str, sample_input: bool = False) -> str:
-    result: str | int = 0
+    result: int = 0
 
     ord_a = ord("A")
     ord_x = ord("X")
 
-    total_score = 0
     # since there are only 9 possible inputs, group them to do fewer calculations
     grouped = Counter(_input.splitlines())
     for game in grouped:
@@ -36,9 +35,8 @@ def main(_input: str, sample_input: bool = False) -> str:
         # add opp value together with the instruction value and figure out the move before it
         me = (ord(opp) - ord_a + ord(instruction) - ord_x - 1) % 3
 
-        total_score += score(ord(opp) - ord_a, me) * grouped[game]
+        result += score(ord(opp) - ord_a, me) * grouped[game]
 
-    result = total_score
     return str(result)
 
 

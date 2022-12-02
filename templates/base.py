@@ -8,7 +8,7 @@ import utils
 
 @injection.input_injection
 def main(_input: str, sample_input: bool = False) -> str:
-    result: str | int = ""
+    result: int = 0
 
     # code here
 
