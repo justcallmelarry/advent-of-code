@@ -34,7 +34,7 @@ def new(year: int, day: int) -> None:
             f"test_{year}_{str(day).zfill(2)}.py",
         )
         if not os.path.exists(test_dest_path_file_name):
-            copyfile("templates/test.py", dest_path_file_name)
+            copyfile("templates/test.py", test_dest_path_file_name)
 
     webbrowser.open(f"https://adventofcode.com/{year}/day/{day}")
 
