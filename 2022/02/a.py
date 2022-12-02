@@ -4,15 +4,18 @@ import injection
 
 
 def score(opp: int, me: int) -> int:
-    # if opp == 1 value lower than me -> loss
+    """
+    If a value A is one lower than value B, A wins
+    Use modulo to end up with positive values
+    Always return +1 since modulo A is 0, but should give 1 point
+    """
     if (opp - 1) % 3 == me:
-        return me + 1
+        return me + 1  # loss, return value of own value
 
-    # if me == 1 value lower than opp -> win
     elif (me - 1) % 3 == opp:
-        return me + 7
+        return me + 7  # win, return value of own value + 6
 
-    # draw
+    # draw, return value of own value + 3
     return me + 4
 
 
