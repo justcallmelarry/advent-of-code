@@ -1,4 +1,5 @@
 import sys
+from collections import Counter
 
 import injection
 
@@ -27,13 +28,15 @@ def main(_input: str, sample_input: bool = False) -> str:
     ord_x = ord("X")
 
     total_score = 0
-    for game in _input.splitlines():
+    # since there are only 9 possible inputs, group them to do fewer calculations
+    grouped = Counter(_input.splitlines())
+    for game in grouped:
         opp, instruction = game.split()
 
         # add opp value together with the instruction value and figure out the move before it
         me = (ord(opp) - ord_a + ord(instruction) - ord_x - 1) % 3
 
-        total_score += score(ord(opp) - ord_a, me)
+        total_score += score(ord(opp) - ord_a, me) * grouped[game]
 
     result = total_score
     return str(result)
