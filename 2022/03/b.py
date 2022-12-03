@@ -18,8 +18,7 @@ def main(_input: str, sample_input: bool = False) -> str:
 
     while lines:
         # reduce the lines 3 at a time to create a group
-        group = lines[-3:]
-        lines = lines[:-3]
+        group = [lines.pop() for _ in range(3)]
 
         # intersect the elves to get the common badge item
         e1 = set(group[0])
