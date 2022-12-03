@@ -21,10 +21,7 @@ def main(_input: str, sample_input: bool = False) -> str:
         group = [lines.pop() for _ in range(3)]
 
         # intersect the elves to get the common badge item
-        e1 = set(group[0])
-        e2 = set(group[1])
-        e3 = set(group[2])
-
+        e1, e2, e3 = (set(e) for e in group)
         for c in list(e1.intersection(e2).intersection(e3)):
             result += get_value(c)
 
