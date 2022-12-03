@@ -1,6 +1,7 @@
 import string
 import sys
 
+import utils
 from injection import input_injection
 
 VALUES = "_" + string.ascii_lowercase + string.ascii_uppercase
@@ -15,9 +16,7 @@ def main(_input: str, sample_input: bool = False) -> str:
     result: int = 0
 
     for line in _input.splitlines():
-        half_line = len(line) // 2
-        compartment_a = set(line[:half_line])
-        compartment_b = set(line[half_line:])
+        compartment_a, compartment_b = (set(x) for x in utils.split_string(line))
         for c in list(compartment_a.intersection(compartment_b)):
             result += get_value(c)
 

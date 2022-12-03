@@ -114,3 +114,7 @@ def manhattan_dist(coords: tuple[int, int], target_coords: tuple[int, int]) -> i
     dx = abs(coords[0] - target_coords[0])
     dy = abs(coords[1] - target_coords[1])
     return abs(dx + dy)
+
+
+def split_string(string: str, parts: int = 2) -> tuple[str, ...]:
+    return string[: len(string) // parts], string[len(string) // parts :]
