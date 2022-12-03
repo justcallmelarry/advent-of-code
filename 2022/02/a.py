@@ -40,5 +40,33 @@ def main(_input: str, sample_input: bool = False) -> str:
     return str(result)
 
 
+@input_injection
+def original_solution(_input: str, sample_input: bool = False) -> str:
+    result: int = 0
+
+    r = 1
+    p = 2
+    s = 3
+    draw = 3
+    win = 6
+
+    results = {
+        "A X": r + draw,
+        "A Y": p + win,
+        "A Z": s,
+        "B X": r,
+        "B Y": p + draw,
+        "B Z": s + win,
+        "C X": r + win,
+        "C Y": p,
+        "C Z": s + draw,
+    }
+
+    for line in _input.splitlines():
+        result += results[line]
+
+    return str(result)
+
+
 if __name__ == "__main__":
     print(main(True if "--sample" in sys.argv else False))
