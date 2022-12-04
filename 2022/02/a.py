@@ -70,3 +70,4 @@ def original_solution(_input: str, sample_input: bool = False) -> str:
 
 if __name__ == "__main__":
     print(main(True if "--sample" in sys.argv else False))
+    print(original_solution(True if "--sample" in sys.argv else False))
