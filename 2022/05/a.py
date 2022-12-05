@@ -21,7 +21,6 @@ def main(_input: str, sample_input: bool = False) -> str:
         to_ = cmd[2]
         qty = cmd[0]
 
-        # better solution for large loops
         crate = columns[from_][-qty:]
         columns[to_] += crate[::-1]  # reverse the string
         columns[from_] = columns[from_][:-qty]
