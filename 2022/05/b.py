@@ -13,8 +13,8 @@ def main(_input: str, sample_input: bool = False) -> str:
 
     base_rows.reverse()
     for row in base_rows:
-        for i, box in enumerate(row[1::4], start=1):
-            columns[i] += re.sub("[^A-Z]", "", box)
+        for i, value in enumerate(row[1::4], start=1):
+            columns[i] += re.sub("[^A-Z]", "", value)
 
     for line in directions.splitlines():
         cmd = utils.positive_ints(line)
