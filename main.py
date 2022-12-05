@@ -6,8 +6,8 @@ from functools import lru_cache
 from shutil import copyfile
 from typing import Literal
 
+import aoc
 import click
-import md
 
 
 @lru_cache(1)
@@ -17,7 +17,7 @@ def _get_day_path(year: int, day: int) -> str:
 
 def _store_markdown(year: int, day: int) -> None:
     day_path = _get_day_path(year, day)
-    markdown = md.get_markdown(year=year, day=day)
+    markdown = aoc.get_markdown(year=year, day=day)
     with open(os.path.join(day_path, "README.md"), "w") as readme:
         readme.write(markdown)
 
@@ -55,7 +55,7 @@ def new(year: int, day: int) -> None:
         if not os.path.exists(test_dest_path_file_name):
             copyfile("templates/test.py", test_dest_path_file_name)
 
-    webbrowser.open(f"https://adventofcode.com/{year}/day/{day}")
+    webbrowser.open(aoc.get_url(year, day))
     _store_markdown(year, day)
 
 
