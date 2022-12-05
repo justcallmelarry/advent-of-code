@@ -23,10 +23,16 @@ def main(_input: str, sample_input: bool = False) -> str:
         to_ = cmd[2]
         qty = cmd[0]
 
-        for _ in range(qty):
-            crate = columns[cmd[1]][-1:]
-            columns[to_] += crate
-            columns[from_] = columns[from_][:-1]
+        # better solution for large loops
+        crate = columns[cmd[1]][-qty:]
+        columns[to_] += crate[::-1]  # reverse the string
+        columns[from_] = columns[from_][:-qty]
+
+        # # old solution
+        # for _ in range(qty):
+        #     crate = columns[cmd[1]][-1:]
+        #     columns[to_] += crate
+        #     columns[from_] = columns[from_][:-1]
 
     return str("".join(x[-1] for x in columns.values() if x))
 
