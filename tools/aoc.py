@@ -6,7 +6,6 @@ import sys
 from typing import Any
 
 import httpx
-import utils
 from bs4 import BeautifulSoup
 
 
