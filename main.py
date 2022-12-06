@@ -64,11 +64,12 @@ def new(year: int, day: int) -> None:
 @click.option("-y", "--year", type=int, default=date.today().year)
 @click.option("-d", "--day", type=int, default=date.today().day)
 @click.option("-s", "--sample", is_flag=True)
-def run(part: Literal["1", "2"], year: int, day: int, sample: bool) -> None:
+@click.option("-i", "--input-string")
+def run(part: Literal["1", "2"], year: int, day: int, sample: bool, input_string: str) -> None:
     part_name = "a" if part == "1" else "b"
     mod = importlib.import_module(f"{year}.{str(day).zfill(2)}.{part_name}")
 
-    result = mod.main(sample)
+    result = mod.main(sample=sample, provided_input=input_string)
 
     print(f"Part {part}:", result)
 
