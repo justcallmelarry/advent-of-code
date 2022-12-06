@@ -18,7 +18,8 @@ Each year has it's own directory (example: `2022`) containing a directory for ea
 Within each directory there is a file for the first part (`a.py`) of the puzzle, and another (`b.py`) if the second part of the puzzle has been solved.\
 In addition to this, a `README.md` is provided with the puzzle description from AoC, as well as the user input `input.user` to run the puzzles.
 
-Optional files include `og.py` which contains my original solution if I have been tinkering around/refactoring with the a/b files and the new solution diverges somewhat far from my original solution. Additionally there is sometimes/usually an `input.sample` present if there was an example present in the task that can be solved in the same way as the actual input.
+Optional files include `og.py` which contains my original solution if I have been tinkering around/refactoring with the a/b files and the new solution diverges somewhat far from my original solution. Additionally there is sometimes/usually an `input.sample` present if there was an example present in the task that can be solved in the same way as the actual input.\
+Additionally there might be a `part-a.log` or `part-b.log` with some logging for my own attempts, mostly to see how long i spend on the task when i actually do it.
 
 ## Tests
 All day's have a test created which tests that the solution outputs the correct answer for each puzzle, and also for the sample file where applicable.\
