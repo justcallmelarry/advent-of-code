@@ -65,13 +65,17 @@ def new(year: int, day: int) -> None:
 @click.option("-d", "--day", type=int, default=date.today().day)
 @click.option("-s", "--sample", is_flag=True)
 @click.option("-i", "--input-string")
-def run(part: Literal["1", "2"], year: int, day: int, sample: bool, input_string: str) -> None:
+@click.option("--submit", is_flag=True)
+def run(part: Literal["1", "2"], year: int, day: int, sample: bool, input_string: str, submit: bool) -> None:
     part_name = "a" if part == "1" else "b"
     mod = importlib.import_module(f"{year}.{str(day).zfill(2)}.{part_name}")
 
-    result = mod.main(sample=sample, provided_input=input_string)
+    answer = mod.main(sample=sample, provided_input=input_string)
 
-    print(f"Part {part}:", result)
+    print(f"Part {part}:", answer)
+
+    if submit:
+        aoc.submit(year=year, day=day, part=int(part), answer=answer)
 
 
 @cli.command()
