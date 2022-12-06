@@ -1,7 +1,6 @@
 import collections
 import sys
 
-import utils
 from injection import input_injection
 
 
