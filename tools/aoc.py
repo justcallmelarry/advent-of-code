@@ -184,7 +184,10 @@ def get_markdown(year: int, day: int) -> str:
     return content
 
 
-def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> None:
+def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
+    """
+    Cache all answers for each puzzle, in order not to spam AoC with requests.
+    """
     cache_path = Path(__file__).parent.parent / ".cache" / f"{year}-{str(day).zfill(2)}--{part}"
     if os.path.isfile(cache_path):
         with open(cache_path) as cache_file:
@@ -194,7 +197,7 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> None:
 
     if answer in cache:
         print("This answer was already tried. Aborting!")
-        return
+        return False
 
     url = get_url(year, day)
     response = httpx.post(
@@ -205,14 +208,18 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> None:
     if not 200 <= response.status_code <= 299:
         print("Got error response while trying to submit:")
         print(response.text)
-        return
+        return False
 
     soup = BeautifulSoup(response.text, "html.parser")
     message = soup.article.text
     message = message.lower()
 
+    with open(cache_path, "a") as cache_file:
+        cache_file.write(f"{answer}\n")
+
     if "that's the right answer" in message:
         print("Correct! 🌟")
+        return True
 
     elif "that's not the right answer" in message:
         if "too high" in message:
@@ -230,5 +237,4 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> None:
     elif "you gave an answer too recently" in message:
         print("You gave an incorrect answer too recently, please wait a bit before trying to submit again. ⏱️")
 
-    with open(cache_path, "a") as cache_file:
-        cache_file.write(f"{answer}\n")
+    return False
