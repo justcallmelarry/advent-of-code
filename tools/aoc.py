@@ -95,8 +95,10 @@ def _get_html(year: int, day: int) -> str:
     return _get_response(get_url(year, day)).text
 
 
-# Simplification of https://github.com/dlon/html2markdown/blob/master/html2markdown.py
 def _html_tags_to_markdown(tag: Any, is_first_article: bool) -> None:
+    """
+    Mostly stolen from https://github.com/antonio-ramadas/aoc-to-markdown
+    """
     children = tag.find_all(recursive=False)
     if tag.name != "code":
         for child in children:
