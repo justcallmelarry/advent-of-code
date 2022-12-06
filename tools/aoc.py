@@ -186,44 +186,49 @@ def get_markdown(year: int, day: int) -> str:
 
 def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> None:
     cache_path = Path(__file__).parent.parent / ".cache" / f"{year}-{str(day).zfill(2)}--{part}"
-    with open(cache_path) as cache_file:
-        cache = set(cache_file.read().splitlines())
+    if os.path.isfile(cache_path):
+        with open(cache_path) as cache_file:
+            cache = set(cache_file.read().splitlines())
+    else:
+        cache = set()
 
     if answer in cache:
         print("This answer was already tried. Aborting!")
         return
 
+    url = get_url(year, day)
     response = httpx.post(
-        url=get_url(year, day),
+        url=url + "/answer",
         cookies={"session": _get_token()},
         data={"level": part, "answer": answer},
     )
     if not 200 <= response.status_code <= 299:
-        print("Got error response:")
+        print("Got error response while trying to submit:")
         print(response.text)
         return
 
     soup = BeautifulSoup(response.text, "html.parser")
     message = soup.article.text
+    message = message.lower()
 
-    if "That's the right answer" in message:
-        print("That's the right answer!")
+    if "that's the right answer" in message:
+        print("Correct! 🌟")
 
-    elif "That's not the right answer" in message:
-        if "too high" in message.lower():
-            print("Your answer is too high.")
+    elif "that's not the right answer" in message:
+        if "too high" in message:
+            print("Your answer is too high. ⬆️")
 
-        elif "too low" in message.lower():
-            print("Your answer is too low.")
+        elif "too low" in message:
+            print("Your answer is too low. ⬇️")
 
         else:
-            "That's not the right answer"
+            print("That's not the right answer. ❌")
 
-    elif "Did you already complete it" in message:
-        print("It seems this puzzle has already been completed.")
+    elif "did you already complete it" in message:
+        print("It seems this puzzle has already been completed. 💡")
 
-    elif "You gave an answer too recently" in message:
-        print("You gave an incorrect answer too recently, please wait a bit before submitting again.")
+    elif "you gave an answer too recently" in message:
+        print("You gave an incorrect answer too recently, please wait a bit before trying to submit again. ⏱️")
 
     with open(cache_path, "a") as cache_file:
         cache_file.write(f"{answer}\n")
