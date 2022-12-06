@@ -111,7 +111,7 @@ def run(part: Literal["1", "2"], year: int, day: int, sample: bool, input_string
     duration = datetime.now() - start_time
 
     if correct:
-        _log_entry(year, day, part_name, f"Correct answer! Puzzle completed in {str(duration)}")
+        _log_entry(year, day, part_name, f"Correct answer: {answer}! Puzzle completed in {str(duration)}")
         _correct_submission(year, day, part)
     else:
         _log_entry(year, day, part_name, f"Incorrect guess: {answer}. Time passed: {str(duration)}")
