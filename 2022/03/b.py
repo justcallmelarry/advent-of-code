@@ -11,7 +11,7 @@ def get_value(c: str) -> int:
 
 
 @input_injection
-def main(_input: str, sample_input: bool = False) -> str:
+def main(_input: str) -> str:
     result: int = 0
 
     lines = _input.splitlines()

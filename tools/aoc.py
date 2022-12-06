@@ -2,31 +2,11 @@
 Things to help gather information (sample, description) from the AoC website.
 """
 import os
-import sys
 from pathlib import Path
 from typing import Any, Literal
 
 import httpx
 from bs4 import BeautifulSoup
-
-
-def get_sample(day: int, year: int) -> str:
-    """
-    Loads the sample input for year/day and returns the value as a string.
-    Not actually talking to AoC, just made sense to put it here anwyay.
-    """
-    input_destination_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        str(year),
-        f"{day}".zfill(2),
-        "input.sample",
-    )
-    try:
-        with open(input_destination_path) as sample_input:
-            return sample_input.read()
-    except FileNotFoundError:
-        print("no sample file saved")
-        sys.exit(1)
 
 
 def _get_token() -> str:

@@ -5,7 +5,7 @@ from injection import input_injection
 
 
 @input_injection
-def main(_input: str, sample_input: bool = False) -> str:
+def main(_input: str) -> str:
     base, directions = _input.split("\n\n")
     base_rows = base.splitlines()
     columns = {i: "" for i in utils.positive_ints(base_rows.pop(-1))}

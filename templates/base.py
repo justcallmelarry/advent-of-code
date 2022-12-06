@@ -6,7 +6,7 @@ from injection import input_injection
 
 
 @input_injection
-def main(_input: str, sample_input: bool = False) -> str:
+def main(_input: str) -> str:
     result: int = 0
 
     # code here

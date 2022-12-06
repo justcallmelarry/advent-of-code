@@ -21,7 +21,7 @@ def score(opp: int, me: int) -> int:
 
 
 @input_injection
-def main(_input: str, sample_input: bool = False) -> str:
+def main(_input: str) -> str:
     result: int = 0
 
     # as we are lucky enough that the chars are in order we can just use ord()

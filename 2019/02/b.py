@@ -26,7 +26,7 @@ def run_input(list_: list[int]) -> None:
 
 
 @input_injection
-def main(_input: str, sample_input: bool = False) -> str:
+def main(_input: str,) -> str:
     int_list = utils.ints(_input)
 
     target = 19690720

@@ -91,14 +91,13 @@ def _correct_submission(year: int, day: int, part: Literal["1", "2"]) -> None:
 @click.argument("part", type=click.Choice(["1", "2"]))
 @click.option("-y", "--year", type=int, default=date.today().year)
 @click.option("-d", "--day", type=int, default=date.today().day)
-@click.option("-s", "--sample", is_flag=True)
 @click.option("-i", "--input-string")
 @click.option("--submit", is_flag=True)
-def run(part: Literal["1", "2"], year: int, day: int, sample: bool, input_string: str, submit: bool) -> None:
+def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit: bool) -> None:
     part_name: Literal["a", "b"] = "a" if part == "1" else "b"
     mod = importlib.import_module(f"{year}.{str(day).zfill(2)}.{part_name}")
 
-    answer = mod.main(sample=sample, provided_input=input_string)
+    answer = mod.main(provided_input=input_string)
 
     print(f"Part {part}:", answer)
 

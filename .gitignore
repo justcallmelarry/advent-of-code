@@ -4,3 +4,5 @@ token.txt
 .vscode/
 .cache/*
 !.cache/.gitkeep
+input.user
+input.sample

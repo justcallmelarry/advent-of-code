@@ -6,16 +6,24 @@ import pytest
 
 yearday = re.sub("[^0-9]", "", str(__file__))
 
+sample = """
+14
+1969
+100756
+"""
+
 
 @pytest.mark.parametrize(
-    ("part_name", "expected", "sample"),
+    ("part_name", "expected", "provided_input"),
     [
-        ("a", "34239", True),
-        ("b", "51314", True),
-        ("a", "3425624", False),
-        ("b", "5135558", False),
+        ("a", "34239", sample),
+        ("b", "51314", sample),
+        ("a", "3425624", ""),
+        ("b", "5135558", ""),
     ],
 )
-def test_result(part_name: Literal["a", "b"], expected: str, sample: bool) -> None:
+def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:
+    if expected == "CHANGEME":
+        pytest.skip()
     mod = importlib.import_module(f"{yearday[:4]}.{str(yearday[-2:]).zfill(2)}.{part_name}")
-    assert mod.main(sample) == expected
+    assert mod.main(provided_input=provided_input) == expected

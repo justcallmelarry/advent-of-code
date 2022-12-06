@@ -21,7 +21,7 @@ def score(opp: int, me: int) -> int:
 
 
 @input_injection
-def part_1(_input: str, sample_input: bool = False) -> str:
+def part_1(_input: str) -> str:
     result: int = 0
 
     r = 1
@@ -49,7 +49,7 @@ def part_1(_input: str, sample_input: bool = False) -> str:
 
 
 @input_injection
-def part_2(_input: str, sample_input: bool = False) -> str:
+def part_2(_input: str) -> str:
     result: int = 0
 
     r = 1
