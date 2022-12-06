@@ -68,7 +68,7 @@ def new(year: int, day: int) -> None:
             copyfile("templates/test.py", test_dest_path_file_name)
 
     webbrowser.open(aoc.get_url(year, day))
-    _log_entry(year, day, "a", "Started task `a`")
+    _log_entry(year, day, "a", "Started task")
     _store_markdown(year, day)
 
 
@@ -79,7 +79,7 @@ def _correct_submission(year: int, day: int, part: Literal["1", "2"]) -> None:
     _store_markdown(year, day)
     if part == "1":
         # copy a.py to b.py
-        _log_entry(year, day, "b", "Started task `b`")
+        _log_entry(year, day, "b", "Started task")
 
         day_path = _get_day_path(year, day)
         source_path_file_name = os.path.join(day_path, "a.py")
