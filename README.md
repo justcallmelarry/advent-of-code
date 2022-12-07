@@ -10,8 +10,8 @@ Update the path as needed.
 ## Dev Tooling / Readable Code
 * [Black](https://github.com/psf/black)
 * [isort](https://pycqa.github.io/isort/)
-* [mypy](http://mypy-lang.org/).\
-* [flake8](https://flake8.pycqa.org/en/latest/).
+* [mypy](http://mypy-lang.org/)
+* [flake8](https://flake8.pycqa.org/en/latest/)
 
 ## Repo Structure
 Each year has it's own directory (example: `2022`) containing a directory for each day (example `07`) where at least one part has been solved.\
