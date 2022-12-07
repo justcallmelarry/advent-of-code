@@ -4,6 +4,8 @@ from typing import Literal
 
 import pytest
 
+from infra import get_mod_path
+
 yearday = re.sub("[^0-9]", "", str(__file__))
 
 sample = """
@@ -36,5 +38,6 @@ sample = """
 def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:
     if expected == "CHANGEME":
         pytest.skip()
-    mod = importlib.import_module(f"{yearday[:4]}.{str(yearday[-2:]).zfill(2)}.{part_name}")
+    mod_path = get_mod_path(int(yearday[:4]), int(yearday[-2:]), part_name)
+    mod = importlib.import_module(mod_path)
     assert mod.main(provided_input=provided_input) == expected

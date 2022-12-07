@@ -8,6 +8,8 @@ from typing import Any, Literal
 import httpx
 from bs4 import BeautifulSoup
 
+from infra import get_day_path
+
 
 def _get_token() -> str:
     token_path = Path(__file__).parent.parent / "token.txt"
@@ -20,12 +22,7 @@ def get_actual(day: int, year: int) -> str:
     Loads the input for year/day and returns the value as a string.
     If the input is not saved, attempt to get it from AoC.
     """
-    input_destination_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        str(year),
-        f"{day}".zfill(2),
-        "input.user",
-    )
+    input_destination_path = os.path.join(get_day_path(year, day), "input.user")
     try:
         with open(input_destination_path) as actual_input:
             return actual_input.read()

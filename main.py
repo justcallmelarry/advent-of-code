@@ -6,17 +6,14 @@ from functools import lru_cache
 from shutil import copyfile
 from typing import Literal
 
-import aoc
 import click
 
-
-@lru_cache(1)
-def _get_day_path(year: int, day: int) -> str:
-    return os.path.join(str(year), f"{day}".zfill(2))
+import aoc
+from infra import get_day_path, get_mod_path
 
 
 def _store_markdown(year: int, day: int) -> None:
-    day_path = _get_day_path(year, day)
+    day_path = get_day_path(year, day)
     markdown = aoc.get_markdown(year=year, day=day)
     with open(os.path.join(day_path, "README.md"), "w") as readme:
         readme.write(markdown.split("\n\n", 1)[0] + "\n")
@@ -30,13 +27,13 @@ def cli() -> None:
 
 
 def _log_entry(year: int, day: int, part_name: Literal["a", "b"], entry: str) -> None:
-    day_path = _get_day_path(year, day)
+    day_path = get_day_path(year, day)
     with open(os.path.join(day_path, f"part-{part_name}.log"), "a") as log_file:
         log_file.write(f"{datetime.now().isoformat()} {entry}\n")
 
 
 def _log_start(year: int, day: int, part_name: Literal["a", "b"]) -> datetime:
-    day_path = _get_day_path(year, day)
+    day_path = get_day_path(year, day)
     with open(os.path.join(day_path, f"part-{part_name}.log")) as log_file:
         return datetime.fromisoformat(log_file.readline().split()[0])
 
@@ -45,7 +42,7 @@ def _log_start(year: int, day: int, part_name: Literal["a", "b"]) -> datetime:
 @click.option("-y", "--year", type=int, default=date.today().year)
 @click.option("-d", "--day", type=int, default=date.today().day)
 def new(year: int, day: int) -> None:
-    day_path = _get_day_path(year, day)
+    day_path = get_day_path(year, day)
 
     if os.path.isdir(day_path):
         print("day alreddy exists")
@@ -83,7 +80,7 @@ def _correct_submission(year: int, day: int, part: Literal["1", "2"]) -> None:
         # copy a.py to b.py
         _log_entry(year, day, "b", "Started puzzle")
 
-        day_path = _get_day_path(year, day)
+        day_path = get_day_path(year, day)
         source_path_file_name = os.path.join(day_path, "a.py")
         dest_path_file_name = os.path.join(day_path, "b.py")
         copyfile(source_path_file_name, dest_path_file_name)
@@ -97,7 +94,7 @@ def _correct_submission(year: int, day: int, part: Literal["1", "2"]) -> None:
 @click.option("--submit", is_flag=True)
 def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit: bool) -> None:
     part_name: Literal["a", "b"] = "a" if part == "1" else "b"
-    mod = importlib.import_module(f"{year}.{str(day).zfill(2)}.{part_name}")
+    mod = importlib.import_module(get_mod_path(year, day, part_name))
 
     answer = mod.main(provided_input=input_string)
 

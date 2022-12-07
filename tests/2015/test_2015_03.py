@@ -12,12 +12,10 @@ yearday = re.sub("[^0-9]", "", str(__file__))
 @pytest.mark.parametrize(
     ("part_name", "expected", "provided_input"),
     [
-        ("a", "58", "2x3x4"),
-        ("b", "34", "2x3x4"),
-        ("a", "43", "1x1x10"),
-        ("b", "14", "1x1x10"),
-        ("a", "1588178", ""),
-        ("b", "3783758", ""),
+        ("a", "2", ">"),
+        ("b", "11", "^v^v^v^v^v"),
+        ("a", "2592", ""),
+        ("b", "2360", ""),
     ],
 )
 def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:
