@@ -1,5 +1,4 @@
 # Advent of Code
-
 My solutions for AoC! Generally do a solution myself first, then look up what others have done and refactor my own solution on order to learn how to do them better in the future.\
 I generally aim for a clean solution (at least with python) that scales to bigger input files/larger ranges in the inputs, etc. My modus operandi is generally to clear the puzzle by myself, then look at other peoples solutions in order to learn from people who solved it in a better way than me and to improve my own skills.
 
