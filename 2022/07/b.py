@@ -12,20 +12,20 @@ def get_data(_input: str) -> tuple[int, dict[Path, int]]:
 
     for line in _input.splitlines():
         chunks = line.split()
-        if chunks[1] == "cd":
-            dirname = chunks[2]
-            if dirname == "..":
-                current_path = current_path.parent
-            elif current_path:
-                current_path = current_path / dirname
-            elif dirname in ("/", ""):
-                # this never happens in the input, except for the first line, but you never know
-                current_path = Path("/")
-            else:
-                current_path = Path(dirname)
 
-        elif chunks[0].isnumeric():
-            tree[current_path] += utils.positive_ints(line)[0]
+        match chunks:
+            case ["$", "cd", "/"]:
+                current_path = Path("/")
+            case ["$", "cd"]:
+                # this never happens in the input, but you never know
+                current_path = Path("/")
+            case ["$", "cd", ".."]:
+                current_path = current_path.parent
+            case ["$", "cd", dirname]:
+                current_path = current_path / dirname
+            case [file_size, _]:
+                if file_size not in ("$", "dir"):
+                    tree[current_path] += int(file_size)
 
     new_tree: dict[Path, int] = collections.defaultdict(int)
     for key, value in tree.items():
