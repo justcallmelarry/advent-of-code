@@ -6,7 +6,7 @@ import utils
 from injection import input_injection
 
 
-def get_tree(_input: str) -> dict[Path, int]:
+def get_data(_input: str) -> tuple[int, dict[Path, int]]:
     tree: dict[Path, int] = collections.defaultdict(int)
     current_path = Path()
 
@@ -18,6 +18,9 @@ def get_tree(_input: str) -> dict[Path, int]:
                 current_path = current_path.parent
             elif current_path:
                 current_path = current_path / dirname
+            elif dirname in ("/", ""):
+                # this never happens in the input, except for the first line, but you never know
+                current_path = Path("/")
             else:
                 current_path = Path(dirname)
 
@@ -33,14 +36,14 @@ def get_tree(_input: str) -> dict[Path, int]:
             key = key.parent
             new_tree[key] += value
 
-    return new_tree
+    return sum(tree.values()), new_tree
 
 
 @input_injection
 def main(_input: str) -> str:
     result: int = 0
 
-    tree = get_tree(_input)
+    _, tree = get_data(_input)
 
     result = sum([v for v in tree.values() if v <= 100000])
 
