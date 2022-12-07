@@ -1,5 +1,4 @@
 import sys
-from collections import Counter
 
 from injection import input_injection
 

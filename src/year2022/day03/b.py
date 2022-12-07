@@ -1,13 +1,7 @@
-import string
 import sys
 
 from injection import input_injection
-
-VALUES = "_" + string.ascii_lowercase + string.ascii_uppercase
-
-
-def get_value(c: str) -> int:
-    return VALUES.index(c)
+from year2022.day03.a import get_value
 
 
 @input_injection

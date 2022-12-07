@@ -6,7 +6,10 @@ from injection import input_injection
 
 
 def get_fuel(x: int) -> int:
-    return math.floor(x / 3) - 2
+    fuel = math.floor(x / 3) - 2
+    if fuel < 0:
+        return 0
+    return fuel
 
 
 @input_injection

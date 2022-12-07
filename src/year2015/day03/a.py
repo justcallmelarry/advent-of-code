@@ -4,7 +4,7 @@ from injection import input_injection
 
 
 def get_coords(_input: str, start: int = 0, steps: int = 1) -> set[str]:
-    x,y = 0,0
+    x, y = 0, 0
     coords = set(["0,0"])
     for direction in _input[start::steps]:
         match direction:

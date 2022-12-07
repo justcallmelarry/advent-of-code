@@ -1,13 +1,12 @@
-import collections
 import sys
 
 import utils
 from injection import input_injection
 
 
-def get_ribbon(l: int, w: int, h: int) -> int:
-    smallest = sorted([l, w, h])[:2]
-    return l * w * h + smallest[0] * 2 + smallest[1] * 2
+def get_ribbon(length: int, width: int, height: int) -> int:
+    smallest = sorted([length, width, height])[:2]
+    return length * width * height + smallest[0] * 2 + smallest[1] * 2
 
 
 @input_injection
@@ -15,8 +14,8 @@ def main(_input: str) -> str:
     result: int = 0
 
     for line in _input.splitlines():
-        l, w, h = utils.positive_ints(line)
-        result += get_ribbon(l, w, h)
+        length, width, height = utils.positive_ints(line)
+        result += get_ribbon(length, width, height)
 
     return str(result)
 

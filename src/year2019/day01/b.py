@@ -1,15 +1,8 @@
-import math
 import sys
 
 import utils
 from injection import input_injection
-
-
-def get_fuel(x: int) -> int:
-    fuel = math.floor(x / 3) - 2
-    if fuel < 0:
-        return 0
-    return fuel
+from year2019.day01.a import get_fuel
 
 
 @input_injection

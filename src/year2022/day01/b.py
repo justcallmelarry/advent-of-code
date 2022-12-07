@@ -1,16 +1,15 @@
 import heapq
 import sys
 
-import utils
 from injection import input_injection
+from year2022.day01.a import get_elves
 
 
 @input_injection
 def main(_input: str) -> str:
     result: int = 0
 
-    elves_input = _input.split("\n\n")
-    elves = [sum(utils.ints(elf)) for elf in elves_input]
+    elves = get_elves(_input)
 
     result = sum(heapq.nlargest(3, elves))
 

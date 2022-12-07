@@ -1,18 +1,12 @@
 import sys
 
 from injection import input_injection
+from year2022.day06.a import get_signal_message_char
 
 
 @input_injection
 def main(_input: str) -> str:
-    result = 0
-    size = 14
-
-    for i in range(len(_input)):
-        split = _input[i : i + size]
-        if len(set(split)) == size:
-            result = i + size
-            break
+    result = get_signal_message_char(_input, 14)
 
     return str(result)
 
