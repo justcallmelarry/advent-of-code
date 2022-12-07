@@ -19,6 +19,8 @@ def _store_markdown(year: int, day: int) -> None:
     day_path = _get_day_path(year, day)
     markdown = aoc.get_markdown(year=year, day=day)
     with open(os.path.join(day_path, "README.md"), "w") as readme:
+        readme.write(markdown.split("\n\n", 1)[0] + "\n")
+    with open(os.path.join(day_path, "PUZZLE.md"), "w") as readme:
         readme.write(markdown)
 
 
