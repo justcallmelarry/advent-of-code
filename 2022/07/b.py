@@ -2,7 +2,6 @@ import collections
 import sys
 from pathlib import Path
 
-import utils
 from injection import input_injection
 
 
@@ -23,8 +22,8 @@ def get_data(_input: str) -> tuple[int, dict[Path, int]]:
                 current_path = current_path.parent
             case ["$", "cd", dirname]:
                 current_path = current_path / dirname
-            case [file_size, _]:
-                if file_size not in ("$", "dir"):
+            case [file_size, _]:  # catches ls statements, dir listings, and files
+                if file_size.isnumeric():  # only care about files
                     tree[current_path] += int(file_size)
 
     new_tree: dict[Path, int] = collections.defaultdict(int)
