@@ -1,4 +1,3 @@
-import sys
 
 from injection import input_injection
 from models import Coords
@@ -31,4 +30,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    print(main(True if "--sample" in sys.argv else False))
+    print(main())

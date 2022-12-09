@@ -1,4 +1,3 @@
-import sys
 
 from injection import input_injection
 from models import Coords
@@ -33,8 +32,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    try:
-        provided_input = sys.argv[1]
-    except IndexError:
-        provided_input = ""
     print(main())

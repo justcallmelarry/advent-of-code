@@ -1,5 +1,6 @@
 import inspect
 import re
+import sys
 from typing import Callable
 
 import aoc
@@ -12,7 +13,12 @@ def input_injection(func: Callable) -> Callable:
 
         if provided_input:
             _input = provided_input
-        else:
+        elif len(sys.argv) == 2:
+            try:
+                _input = sys.argv[1]
+            except IndexError:
+                _input = ""
+        if not _input:
             _input = aoc.get_actual(day=int(yearday[-2:]), year=int(yearday[:4]))
 
         return func(_input)
