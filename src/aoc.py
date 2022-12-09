@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 
 from infra import get_day_path
 
+USER_AGENT = "github.com/justcallmelarry/advent-of-code by justcallmelarry"
+
 
 def _get_token() -> str:
     token_path = Path(__file__).parent.parent / "token.txt"
@@ -43,7 +45,11 @@ def get_actual(day: int, year: int) -> str:
     import httpx
 
     url = get_url(year, day) + "/input"
-    response = httpx.get(url, cookies={"session": _get_token()})
+    response = httpx.get(
+        url,
+        cookies={"session": _get_token()},
+        headers={"User-Agent": USER_AGENT},
+    )
     response.raise_for_status()
     with open(input_destination_path, "w") as input_file:
         input_file.write(response.text)
@@ -57,7 +63,11 @@ def get_url(year: int, day: int) -> str:
 
 
 def _get_response(url: str) -> httpx.Response:
-    response = httpx.get(url, cookies={"session": _get_token()})
+    response = httpx.get(
+        url,
+        cookies={"session": _get_token()},
+        headers={"User-Agent": USER_AGENT},
+    )
 
     if response.status_code != 200:
         raise ValueError(
@@ -182,6 +192,7 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
     response = httpx.post(
         url=url + "/answer",
         cookies={"session": _get_token()},
+        headers={"User-Agent": USER_AGENT},
         data={"level": part, "answer": answer},
     )
     if not 200 <= response.status_code <= 299:
