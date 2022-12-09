@@ -1,4 +1,3 @@
-import sys
 
 from injection import input_injection
 from year2022.day07.a import get_data
@@ -22,4 +21,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    print(main(True if "--sample" in sys.argv else False))
+    print(main())

@@ -1,22 +1,23 @@
-import sys
 
 from injection import input_injection
+from models import Coords
 
 
 def get_coords(_input: str, start: int = 0, steps: int = 1) -> set[str]:
-    x, y = 0, 0
-    coords = set(["0,0"])
+    santa = Coords(name="santa")
+    coords = set()
+    coords.add(santa.current_pos)
     for direction in _input[start::steps]:
         match direction:
             case "<":
-                x -= 1
+                santa.x -= 1
             case ">":
-                x += 1
+                santa.x += 1
             case "v":
-                y -= 1
+                santa.y -= 1
             case "^":
-                y += 1
-        coords.add(f"{x},{y}")
+                santa.y += 1
+        coords.add(santa.current_pos)
 
     return coords
 
@@ -29,4 +30,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    print(main(True if "--sample" in sys.argv else False))
+    print(main())
