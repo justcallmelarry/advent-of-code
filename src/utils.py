@@ -5,6 +5,8 @@ from typing import Any, Callable
 
 sys.setrecursionlimit(10**6)
 
+FILLED_CHAR = "▓"
+
 
 def lmap(func: Callable, *iterables: Any) -> list:
     return list(map(func, *iterables))
