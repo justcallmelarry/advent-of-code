@@ -36,6 +36,10 @@ def ints(s: str) -> list[int]:
     return lmap(int, re.findall(r"-?\d+", s))
 
 
+def intify(s: str) -> int:
+    return int(re.sub("[^0-9]", "", s))
+
+
 def positive_ints(s: str) -> list[int]:
     return lmap(int, re.findall(r"\d+", s))
 
