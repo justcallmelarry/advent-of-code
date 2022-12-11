@@ -1,14 +1,8 @@
 import heapq
 from dataclasses import dataclass
-from functools import lru_cache
 
 import utils
 from injection import input_injection
-
-
-@lru_cache()
-def dodiv(a, b) -> int:
-    return a // b
 
 
 @dataclass
