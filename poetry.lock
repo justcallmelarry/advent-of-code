@@ -402,6 +402,17 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "termcolor"
+version = "2.1.1"
+description = "ANSI color formatting for output in terminal"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -420,7 +431,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "f451b3fc5865dd86d39f06f3bd22855836d5ee797cc3d31df8556def23308e74"
+content-hash = "b996af4daf534349c3f0456d2dbe0107278dab84f66e60a1cf77b0406d7f42bf"
 
 [metadata.files]
 anyio = [
@@ -626,6 +637,10 @@ sniffio = [
 soupsieve = [
     {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
     {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
+]
+termcolor = [
+    {file = "termcolor-2.1.1-py3-none-any.whl", hash = "sha256:fa852e957f97252205e105dd55bbc23b419a70fec0085708fc0515e399f304fd"},
+    {file = "termcolor-2.1.1.tar.gz", hash = "sha256:67cee2009adc6449c650f6bcf3bdeed00c8ba53a8cda5362733c53e0a39fb70b"},
 ]
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
