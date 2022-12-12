@@ -188,6 +188,10 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
         print("This answer was already tried. Aborting!")
         return False
 
+    if answer in ("", "0", "None"):
+        print("Not submitting obviously incorrect answers. Aborting!")
+        return False
+
     url = get_url(year, day)
     response = httpx.post(
         url=url + "/answer",

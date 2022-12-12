@@ -13,9 +13,11 @@ yearday = re.sub("[^0-9]", "", str(__file__))
     ("part_name", "expected", "provided_input"),
     [
         ("a", "31", "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi"),
-        ("b", "CHANGEME", ""),
-        ("a", "CHANGEME", ""),
-        ("b", "CHANGEME", ""),
+        ("a", "27", "SabcdefghijklmnopqrstuvwxyzE"),
+        ("a", "27", "Sabc\ngfed\nhijk\nonml\npqrs\nwvut\nxyzE"),
+        ("b", "29", "Sabqponm\nabcryxxl\naccszExk\nacctuvwj\nabdefghi"),
+        ("a", "440", ""),
+        ("b", "439", ""),
     ],
 )
 def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:
