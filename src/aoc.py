@@ -173,7 +173,7 @@ def get_markdown(year: int, day: int) -> str:
     return content
 
 
-def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
+def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> tuple[str, bool]:
     """
     Cache all answers for each puzzle, in order not to spam AoC with requests.
     """
@@ -185,12 +185,14 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
         cache = set()
 
     if answer in cache:
-        print("This answer was already tried. Aborting!")
-        return False
+        text = "This answer was already tried. Aborting!"
+        print(text)
+        return text, False
 
     if answer in ("", "0", "None"):
-        print("Not submitting obviously incorrect answers. Aborting!")
-        return False
+        text = "Not submitting obviously incorrect answers. Aborting!"
+        print(text)
+        return text, False
 
     url = get_url(year, day)
     response = httpx.post(
@@ -200,9 +202,9 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
         data={"level": part, "answer": answer},
     )
     if not 200 <= response.status_code <= 299:
-        print("Got error response while trying to submit:")
-        print(response.text)
-        return False
+        text = "Got error response while trying to submit: " + response.text
+        print(text)
+        return text, False
 
     soup = BeautifulSoup(response.text, "html.parser")
     message = soup.article.text
@@ -213,22 +215,23 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> bool:
 
     if "that's the right answer" in message:
         print("Correct! 🌟")
-        return True
+        return "", True
 
     elif "that's not the right answer" in message:
         if "too high" in message:
-            print("Your answer is too high. ⬆️")
+            text = "Your answer is too high. ⬆️"
 
         elif "too low" in message:
-            print("Your answer is too low. ⬇️")
+            text = "Your answer is too low. ⬇️"
 
         else:
-            print("That's not the right answer. ❌")
+            text = "That's not the right answer. ❌"
 
     elif "did you already complete it" in message:
-        print("It seems this puzzle has already been completed. 💡")
+        text = "It seems this puzzle has already been completed. 💡"
 
     elif "you gave an answer too recently" in message:
-        print("You gave an incorrect answer too recently, please wait a bit before trying to submit again. ⏱️")
+        text = "You gave an incorrect answer too recently, please wait a bit before trying to submit again. ⏱️"
 
-    return False
+    print(text)
+    return text, False

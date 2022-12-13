@@ -103,7 +103,7 @@ def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit:
     if not submit:
         return
 
-    correct = aoc.submit(year=year, day=day, part=int(part), answer=answer)
+    text, correct = aoc.submit(year=year, day=day, part=int(part), answer=answer)
 
     start_time = _log_start(year, day, part_name)
     duration = datetime.now() - start_time
@@ -112,7 +112,7 @@ def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit:
         _log_entry(year, day, part_name, f"Correct answer: {answer}! Puzzle completed in {str(duration)}")
         _correct_submission(year, day, part)
     else:
-        _log_entry(year, day, part_name, f"Incorrect guess: {answer}. Time passed: {str(duration)}")
+        _log_entry(year, day, part_name, f"{text} Answer: {answer}. Time passed: {str(duration)}")
 
 
 @cli.command()
