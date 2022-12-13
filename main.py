@@ -34,7 +34,13 @@ def _log_entry(year: int, day: int, part_name: Literal["a", "b"], entry: str) ->
 
 def _log_start(year: int, day: int, part_name: Literal["a", "b"]) -> datetime:
     day_path = get_day_path(year, day)
-    with open(os.path.join(day_path, f"part-{part_name}.log")) as log_file:
+    log_file_path = os.path.join(day_path, f"part-{part_name}.log")
+
+    if not os.path.isfile(log_file_path):
+        _log_entry(year, day, part_name, "Log file created")
+        return datetime.now()
+
+    with open(log_file_path) as log_file:
         return datetime.fromisoformat(log_file.readline().split()[0])
 
 
