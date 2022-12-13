@@ -112,7 +112,7 @@ def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit:
         _log_entry(year, day, part_name, f"Correct answer: {answer}! Puzzle completed in {str(duration)}")
         _correct_submission(year, day, part)
     else:
-        _log_entry(year, day, part_name, f"{text} Answer: {answer}. Time passed: {str(duration)}")
+        _log_entry(year, day, part_name, f"Incorrect guess: {answer}. {text} Time passed: {str(duration)}")
 
 
 @cli.command()
