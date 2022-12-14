@@ -12,14 +12,6 @@ def lmap(func: Callable, *iterables: Any) -> list:
     return list(map(func, *iterables))
 
 
-def make_grid(*dimensions: list[int], fill: Any = None) -> list:
-    "Returns a grid such that 'dimensions' is juuust out of bounds."
-    if len(dimensions) == 1:
-        return [fill for _ in range(dimensions[0])]  # type: ignore
-    next_down = make_grid(*dimensions[1:], fill=fill)
-    return [list(next_down) for _ in range(dimensions[0])]  # type: ignore
-
-
 def min_max(list_: list) -> tuple:
     return min(list_), max(list_)
 

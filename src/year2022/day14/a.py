@@ -1,7 +1,7 @@
-import collections
 from dataclasses import dataclass, field
 
 import utils
+from grid import Sparse
 from injection import input_injection
 
 
@@ -39,42 +39,14 @@ def get_rocks(_input: str) -> Rocks:
     return rocks
 
 
-def update_grid(grid: list[list], coords: tuple[int, int], fill: str) -> None:
-    grid[coords[1]][coords[0]] = fill
+def fill_sand(grid: Sparse) -> int:
+    sand_hole = (500, 0)
+    grid.update(sand_hole, "+")
 
+    total_sand = 0
+    previous_sand_level = -1
 
-@input_injection
-def main(_input: str) -> str:
-
-    rocks = get_rocks(_input)
-
-    grid = utils.make_grid(rocks.end_h + 1, rocks.end_w - rocks.start_w + 1, fill=".")
-
-    rocks.coords = set([(rock[0] - rocks.start_w, rock[1]) for rock in rocks.coords])
-    sand_start = (500 - rocks.start_w, 0)
-
-    for rock in rocks.coords:
-        update_grid(grid, rock, "#")
-
-    update_grid(grid, sand_start, "+")
-    sand_x, sand_y = sand_start
-    sand_grains = 0
-    previous_sand_grains = -1
-
-    def inbounds(x: int, y: int) -> bool:
-        return all(
-            [
-                x >= 0,
-                y <= len(grid) - 1,
-                y >= 0,
-                x <= len(grid[0]) - 1,
-            ]
-        )
-
-    def get_value(x: int, y: int) -> str:
-        if not inbounds(x, y):
-            return "inf"
-        return grid[y][x]
+    sand_x, sand_y = sand_hole
 
     while True:
         sand_cur_pos = (sand_x, sand_y)
@@ -82,46 +54,54 @@ def main(_input: str) -> str:
         under_left = sand_x - 1, sand_y + 1
         under_right = sand_x + 1, sand_y + 1
 
-        if get_value(*under_straight) == ".":
+        if grid.get_value(under_straight) == ".":
             sand_y += 1
             continue
 
-        if get_value(*under_left) == ".":
+        if grid.get_value(under_left) == ".":
             sand_y += 1
             sand_x -= 1
             continue
 
-        elif get_value(*under_right) == ".":
+        elif grid.get_value(under_right) == ".":
             sand_y += 1
             sand_x += 1
             continue
 
-        if sand_grains == previous_sand_grains:
-            break
+        if total_sand == previous_sand_level:
+            return total_sand
 
-        if get_value(sand_x, sand_y) == "+":
-            update_grid(grid, sand_cur_pos, "o")
-            sand_grains += 1
-            break
+        if grid.get_value(sand_cur_pos) == "+":
+            grid.update(sand_cur_pos, "o")
+            total_sand += 1
+            return total_sand
 
-        previous_sand_grains = sand_grains
+        previous_sand_level = total_sand
 
         foundation = (
-            get_value(*under_left),
-            get_value(*under_straight),
-            get_value(*under_right),
+            grid.get_value(under_left),
+            grid.get_value(under_straight),
+            grid.get_value(under_right),
         )
-        if all(x not in foundation for x in (".", "inf")):
-            update_grid(grid, sand_cur_pos, "o")
-            sand_grains += 1
+        if all(x not in foundation for x in (".", grid.inf)):
+            grid.update(sand_cur_pos, "o")
+            total_sand += 1
 
-        sand_x, sand_y = sand_start
+        sand_x, sand_y = sand_hole
 
-    if False:  # DEBUG OUTPUT
-        for r in grid:
-            print("".join(r))
 
-    return str(sand_grains)
+@input_injection
+def main(_input: str) -> str:
+    rocks = get_rocks(_input)
+
+    grid = Sparse(height=rocks.end_h + 1, width=rocks.end_w + 1, default=".")
+
+    for rock in rocks.coords:
+        grid.update(rock, "#")
+
+    total_sand = fill_sand(grid)
+
+    return str(total_sand)
 
 
 if __name__ == "__main__":
