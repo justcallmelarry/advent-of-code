@@ -18,7 +18,7 @@ def part_1(_input: str) -> str:
     for line in _input.splitlines():
         direction, steps = line.split()
         for _ in range(int(steps)):
-            previous_position = head.current_pos
+            previous_position = head.coords
             if direction == "R":
                 head.x += 1
             if direction == "L":
@@ -33,7 +33,7 @@ def part_1(_input: str) -> str:
             if dx > 1 or dy > 1:
                 tail.x, tail.y = previous_position
 
-            seen.add(tail.current_pos)
+            seen.add(tail.coords)
 
     result = len(seen)
 

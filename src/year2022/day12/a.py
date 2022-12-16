@@ -85,7 +85,7 @@ def main(_input: str) -> str:
 
         grid.append(row)
 
-    distances = [x for x in get_distance(grid, start.current_pos, targets=[target])]
+    distances = [x for x in get_distance(grid, start.coords, targets=[target])]
 
     return str(min(x.steps for x in distances))
 

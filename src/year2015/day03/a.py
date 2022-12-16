@@ -5,7 +5,7 @@ from models import Coords
 def get_coords(_input: str, start: int = 0, steps: int = 1) -> set[str]:
     santa = Coords(name="santa")
     coords = set()
-    coords.add(santa.current_pos)
+    coords.add(santa.coords)
     for direction in _input[start::steps]:
         if direction == "<":
             santa.x -= 1
@@ -15,7 +15,7 @@ def get_coords(_input: str, start: int = 0, steps: int = 1) -> set[str]:
             santa.y -= 1
         if direction == "^":
             santa.y += 1
-        coords.add(santa.current_pos)
+        coords.add(santa.coords)
 
     return coords
 

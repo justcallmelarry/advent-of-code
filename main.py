@@ -122,6 +122,25 @@ def run(part: Literal["1", "2"], year: int, day: int, input_string: str, submit:
 
 
 @cli.command()
+@click.argument("part", type=click.Choice(["1", "2"]))
+@click.argument("answer")
+@click.option("-y", "--year", type=int, default=date.today().year)
+@click.option("-d", "--day", type=int, default=date.today().day)
+def submit(part: Literal["1", "2"], answer: str, year: int, day: int) -> None:
+    part_name: Literal["a", "b"] = "a" if part == "1" else "b"
+    text, correct = aoc.submit(year=year, day=day, part=int(part), answer=answer)
+
+    start_time = _log_start(year, day, part_name)
+    duration = datetime.now() - start_time
+
+    if correct or "already been completed" in text:
+        _log_entry(year, day, part_name, f"Correct answer: {answer}! Puzzle completed in {str(duration)}")
+        _correct_submission(year, day, part)
+    else:
+        _log_entry(year, day, part_name, f"Incorrect guess: {answer}. {text} Time passed: {str(duration)}")
+
+
+@cli.command()
 @click.option("-y", "--year", type=int, default=date.today().year)
 @click.option("-d", "--day", type=int, default=date.today().day)
 def markdown(year: int, day: int) -> None:

@@ -52,7 +52,7 @@ def main(_input: str) -> str:
         for _ in range(int(steps)):
             move_head(head, direction)
             follow(head, tail)
-            seen.add(tail.current_pos)
+            seen.add(tail.coords)
 
     result = len(seen)
 

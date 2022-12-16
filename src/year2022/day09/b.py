@@ -24,7 +24,7 @@ def main(_input: str) -> str:
             for i in range(len(snake) - 1):
                 follow(snake[i], snake[i + 1])
 
-            seen.add(tail.current_pos)
+            seen.add(tail.coords)
 
     result = len(seen)
 

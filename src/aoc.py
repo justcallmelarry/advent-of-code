@@ -210,9 +210,7 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> tuple[str, 
     message = soup.article.text
     message = message.lower()
 
-    with open(cache_path, "a") as cache_file:
-        cache_file.write(f"{answer}\n")
-
+    write_cache = True
     if "that's the right answer" in message:
         print("Correct! 🌟")
         return "", True
@@ -229,9 +227,14 @@ def submit(year: int, day: int, part: Literal[1, 2], answer: str) -> tuple[str, 
 
     elif "did you already complete it" in message:
         text = "It seems this puzzle has already been completed. 💡"
+        return "", True
 
     elif "you gave an answer too recently" in message:
         text = "You gave an incorrect answer too recently, please wait a bit before trying to submit again. ⏱️"
+        write_cache = False
 
+    if write_cache:
+        with open(cache_path, "a") as cache_file:
+            cache_file.write(f"{answer}\n")
     print(text)
     return text, False

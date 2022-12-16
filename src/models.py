@@ -7,16 +7,16 @@ from dataclasses import dataclass
 
 @dataclass
 class Coords:
-    name: str
+    name: str = ""
     x: int = 0
     y: int = 0
 
     @property
-    def current_pos(self) -> tuple[int, int]:
+    def coords(self) -> tuple[int, int]:
         return self.x, self.y
 
     def __str__(self) -> str:
-        return f"Coords({self.name} x={self.x} y={self.y})"
+        return f"{self.__class__.__name__}({self.name} x={self.x} y={self.y})"
 
     def __repr__(self) -> str:
-        return f"Coords({self.name} x={self.x} y={self.y})"
+        return f"{self.__class__.__name__}({self.name} x={self.x} y={self.y})"

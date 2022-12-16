@@ -56,3 +56,7 @@ def manhattan_dist(coords: tuple[int, int], target_coords: tuple[int, int]) -> i
 
 def split_string(string: str, parts: int = 2) -> tuple[str, ...]:
     return string[: len(string) // parts], string[len(string) // parts :]
+
+
+def overlaps(a: list[int], b: list[int]) -> range:
+    return range(max(a[0], b[0]), min(a[-1], b[-1]) + 1)
