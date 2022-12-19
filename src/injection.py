@@ -15,7 +15,7 @@ def input_injection(func: Callable) -> Callable:
         if provided_input:
             _input = provided_input
 
-        elif len(sys.argv) == 2:
+        elif len(sys.argv) == 2 and not sys.argv[1].endswith(".py"):
             try:
                 _input = sys.argv[1]
             except IndexError:
