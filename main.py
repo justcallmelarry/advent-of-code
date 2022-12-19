@@ -2,7 +2,6 @@ import importlib
 import os
 import webbrowser
 from datetime import date, datetime
-from functools import lru_cache
 from shutil import copyfile
 from typing import Literal
 
@@ -145,6 +144,15 @@ def submit(part: Literal["1", "2"], answer: str, year: int, day: int) -> None:
 @click.option("-d", "--day", type=int, default=date.today().day)
 def markdown(year: int, day: int) -> None:
     _store_markdown(year, day)
+
+
+@cli.command()
+@click.option("-y", "--year", type=int, default=date.today().year)
+@click.option("-d", "--day", type=int, default=date.today().day)
+def test(year: int, day: int) -> None:
+    import subprocess
+
+    subprocess.call(["pytest", f"tests/{year}/test_{year}_{day}.py"])
 
 
 if __name__ == "__main__":
