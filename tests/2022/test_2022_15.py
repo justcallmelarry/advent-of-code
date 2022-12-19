@@ -29,8 +29,8 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3"""
     [
         ("a", "26", sample),
         ("b", "56000011", sample),
-        ("a", "CHANGEME", ""),
-        ("b", "CHANGEME", ""),
+        ("a", "5878678", ""),
+        ("b", "11796491041245", ""),
     ],
 )
 def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:
