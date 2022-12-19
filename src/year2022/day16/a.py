@@ -12,13 +12,6 @@ class Valve:
     flow_rate: int
     tunnels: list[Valve]
 
-    def go_to(self, name: str) -> Valve:
-        for v in self.tunnels:
-            if v.name == name:
-                return v
-
-        raise Exception("No such tunnel")
-
     def __repr__(self) -> str:
         return f"Valve({self.name} flow_rate={self.flow_rate}"
 
