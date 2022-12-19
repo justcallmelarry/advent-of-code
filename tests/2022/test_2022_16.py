@@ -24,9 +24,9 @@ Valve JJ has flow rate=21; tunnel leads to valve II"""
     ("part_name", "expected", "provided_input"),
     [
         ("a", "1651", sample),
-        ("b", "CHANGEME", sample),
+        ("b", "1707", sample),
         ("a", "1828", ""),
-        ("b", "CHANGEME", ""),
+        ("b", "2292", ""),
     ],
 )
 def test_result(part_name: Literal["a", "b"], expected: str, provided_input: str) -> None:

@@ -5,19 +5,8 @@ from dataclasses import dataclass
 
 from injection import input_injection
 
-sample = """Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
-Valve BB has flow rate=13; tunnels lead to valves CC, AA
-Valve CC has flow rate=2; tunnels lead to valves DD, BB
-Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE
-Valve EE has flow rate=3; tunnels lead to valves FF, DD
-Valve FF has flow rate=0; tunnels lead to valves EE, GG
-Valve GG has flow rate=0; tunnels lead to valves FF, HH
-Valve HH has flow rate=22; tunnel leads to valve GG
-Valve II has flow rate=0; tunnels lead to valves AA, JJ
-Valve JJ has flow rate=21; tunnel leads to valve II"""
 
-
-@dataclass(order=True)
+@dataclass
 class Valve:
     name: str
     flow_rate: int
@@ -39,10 +28,17 @@ class Volcano:
     current_position: Valve
     valves: dict[str, Valve]
     opened: list[str]
-    path: deque[str]
     total: int = 0
     current_flow: int = 0
     minutes_lapsed: int = 1
+
+    @property
+    def sorted_opened(self) -> tuple[str, ...]:
+        return tuple(sorted(self.opened))
+
+    @property
+    def end_total(self, end: int = 26) -> int:
+        return self.total + self.current_flow * (end - self.minutes_lapsed - 1)
 
 
 def get_valves(_input: str) -> dict[str, Valve]:
@@ -75,10 +71,12 @@ class QeueuItem:
     path: deque[str]
 
 
-__CACHE: dict[tuple[str, str], deque[str]] = {}
+__CACHE: dict[tuple[str, str], int] = {}
 
 
-def get_shortest_path(start: Valve, target: Valve) -> deque[str]:
+def get_shortest_path(start: Valve, target: Valve) -> int:
+    if (start.name, target.name) in __CACHE:
+        return __CACHE[(start.name, target.name)]
     q = deque([QeueuItem(valve=start, path=deque([]))])
     seen: set[str] = set([])
 
@@ -92,10 +90,8 @@ def get_shortest_path(start: Valve, target: Valve) -> deque[str]:
             new_path.append(t.name)
 
             if t == target:
-                if (start.name, target.name) in __CACHE:
-                    return __CACHE[(start.name, target.name)].copy()
-                __CACHE[(start.name, target.name)] = new_path
-                return new_path.copy()
+                __CACHE[(start.name, target.name)] = len(new_path)
+                return len(new_path)
 
             seen.add(t.name)
             q.append(QeueuItem(valve=t, path=new_path))
@@ -119,15 +115,12 @@ def volcano_game(original_state: Volcano) -> int:
         try:
             for minute in range(volcano.minutes_lapsed, 31):
                 volcano.total += volcano.current_flow
-                # continue on your way
-                if volcano.path:
-                    current_position = current_position.go_to(volcano.path.popleft())
-                    continue
 
                 # open a valve
-                elif current_position.flow_rate != 0 and current_position.name not in volcano.opened:
+                if current_position.flow_rate != 0 and current_position.name not in volcano.opened:
                     volcano.current_flow += current_position.flow_rate
                     volcano.opened.append(current_position.name)
+                    # volcano.minutes_lapsed = minute
                     continue
 
                 # otherwise explore options
@@ -136,19 +129,20 @@ def volcano_game(original_state: Volcano) -> int:
                         continue
 
                     shortest = get_shortest_path(current_position, v)
-                    volcanoes.append(
-                        Volcano(
-                            current_position=current_position.go_to(shortest.popleft()),
-                            valves=volcano.valves,
-                            opened=volcano.opened.copy(),
-                            path=shortest,
-                            total=volcano.total,
-                            current_flow=volcano.current_flow,
-                            minutes_lapsed=minute + 1,
+                    if minute + shortest <= 30:
+                        volcanoes.append(
+                            Volcano(
+                                current_position=v,
+                                valves=volcano.valves,
+                                opened=volcano.opened.copy(),
+                                total=volcano.total + (shortest - 1) * volcano.current_flow,
+                                current_flow=volcano.current_flow,
+                                minutes_lapsed=minute + shortest,
+                            )
                         )
-                    )
                 if len(volcano.opened) != len(possible_turnons):
                     raise NextVolcano
+                volcano.minutes_lapsed = minute
         except NextVolcano:
             pass
         if volcano.total > biggest:
@@ -163,7 +157,7 @@ def main(_input: str) -> str:
     result = 0
 
     aa = valves["AA"]
-    volcano = Volcano(current_position=aa, valves=valves, opened=[], path=deque())
+    volcano = Volcano(current_position=aa, valves=valves, opened=[])
 
     result = volcano_game(volcano)
 
@@ -171,4 +165,4 @@ def main(_input: str) -> str:
 
 
 if __name__ == "__main__":
-    print(main(provided_input=sample))
+    print(main())
