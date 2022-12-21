@@ -16,61 +16,6 @@ class OutOfBoundsErrror(Exception):
         super().__init__(message)
 
 
-class Grid:
-    """
-    If you really want to implement a 2d list grid
-    """
-
-    def __init__(self, height: int, width: int, fill: Any = None) -> None:
-        self.height = height
-        self.width = width
-        self._data = self._make_grid([height, width], fill=fill)
-        self.inf = math.inf
-
-    def __getitem__(self, item: int) -> Any:
-        return self._data[item]
-
-    def _make_grid(self, dimensions: list[int], fill: Any = None) -> list:
-        "Returns a grid such that 'dimensions' is juuust out of bounds."
-        if len(dimensions) == 1:
-            return [fill for _ in range(dimensions[0])]
-        next_down = self._make_grid(dimensions[1:], fill=fill)
-        return [list(next_down) for _ in range(dimensions[0])]
-
-    def inbounds(self, coords: CoordsType) -> bool:
-        return all(
-            [
-                coords[0] >= 0,
-                coords[1] <= self.height - 1,
-                coords[1] >= 0,
-                coords[0] <= self.width - 1,
-            ]
-        )
-
-    def get_value(self, coords: CoordsType) -> Any:
-        if not self.inbounds(coords):
-            return math.inf
-        return self._data[coords[1]][coords[0]]
-
-    @property
-    def output(self) -> str:
-        output = ""
-        for row in self._data:
-            output += "".join(x if x is not None else "" for x in row)
-            output += "\n"
-
-        return output
-
-    def update(self, coords: CoordsType, fill: Any) -> None:
-        self._data[coords[1]][coords[0]] = fill
-
-    @classmethod
-    def from_matrix(cls, matrix: list[list[Any]]) -> Grid:
-        grid = Grid(height=len(matrix), width=len(matrix[0]))
-        grid._data = matrix
-        return grid
-
-
 class Sparse:
     """
     Beginning implementation of a sparse grid
