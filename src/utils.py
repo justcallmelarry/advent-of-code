@@ -12,7 +12,7 @@ def lmap(func: Callable, *iterables: Any) -> list:
     return list(map(func, *iterables))
 
 
-def min_max(list_: list) -> tuple:
+def min_max(list_: list) -> tuple[int, int]:
     return min(list_), max(list_)
 
 
