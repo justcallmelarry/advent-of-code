@@ -6,6 +6,9 @@ from year2022.day21.a import get_monkeys, monkey_math
 
 @input_injection
 def main(_input: str) -> str:
+    """
+    This solution isnt great, as different max values sometimes gives an off-by-1 answer
+    """
     monkeys = get_monkeys(_input)
 
     # replace the root value so that we get minus, which we will use to check for 0
