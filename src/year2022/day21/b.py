@@ -17,7 +17,7 @@ def main(_input: str) -> str:
     baseline = monkey_math(monkeys, "root")
     og_sign = math.copysign(1, baseline)
 
-    span = (0, 999999999999999)
+    span = (0, int("9" * (len(str(baseline)) + 1)))
     while baseline != 0:
         half = sum(span) // 2
         monkeys["humn"] = half
