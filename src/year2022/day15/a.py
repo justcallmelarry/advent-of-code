@@ -1,5 +1,3 @@
-import collections
-
 import utils
 from grid import Sparse
 from injection import input_injection

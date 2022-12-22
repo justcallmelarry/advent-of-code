@@ -1,6 +1,4 @@
 import collections
-import json
-from pathlib import Path
 
 import utils
 from grid import Sparse
@@ -18,7 +16,7 @@ class Signal(Coords):
     beacon_dist: int = 0
 
 
-def get_ranges(target: int, signal: Signal, stupid_list: collections.defaultdict[int, set[SeenType]]) -> None:
+def get_ranges(target: int, signal: Signal, global_seen: collections.defaultdict[int, set[SeenType]]) -> None:
     w, h = 0, signal.beacon_dist
     x, y = signal.coords
     while h >= -signal.beacon_dist:
@@ -32,7 +30,7 @@ def get_ranges(target: int, signal: Signal, stupid_list: collections.defaultdict
             if (low_x, high_x) in ((0, 0), (target, target)):
                 raise FastForward
 
-            seen = stupid_list.get(y_value) or set()
+            seen = global_seen.get(y_value) or set()
 
             for r in list(seen):
                 check = utils.overlaps([low_x, high_x], [*r])
@@ -43,7 +41,7 @@ def get_ranges(target: int, signal: Signal, stupid_list: collections.defaultdict
 
             seen.add((low_x, high_x))
 
-            stupid_list[y_value] = seen
+            global_seen[y_value] = seen
         except FastForward:
             pass
 
@@ -68,12 +66,12 @@ def main(_input: str) -> str:
         grid.update(signal.coords, "S")
         grid.update(beacon_coords, "B")
 
-    stupid_list: collections.defaultdict[int, set[SeenType]] = collections.defaultdict()
+    global_seen: collections.defaultdict[int, set[SeenType]] = collections.defaultdict()
     for signal in signals:
-        get_ranges(target, signal, stupid_list)
+        get_ranges(target, signal, global_seen)
 
     if test:
-        for debug_y, seen in stupid_list.items():
+        for debug_y, seen in global_seen.items():
             for debug_x_range in seen:
                 for debug_x in range(debug_x_range[0], debug_x_range[1] + 1):
                     debug_coords = (debug_x, debug_y)
@@ -83,7 +81,7 @@ def main(_input: str) -> str:
         print(grid.output)
 
     for y in range(grid.y_min, grid.y_max + 1):
-        seen = stupid_list.get(y) or set()
+        seen = global_seen.get(y) or set()
         x = 0
         while x <= target:
             try:
