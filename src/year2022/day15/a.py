@@ -1,63 +1,43 @@
+from shapely.geometry import Polygon
+from shapely.ops import clip_by_rect, unary_union
+
 import utils
-from grid import Sparse
 from injection import input_injection
-from models import Coords
-
-
-class Signal(Coords):
-    beacon_dist: int = 0
-
-
-def add_seen(target: int, signal: Signal, seen: set[tuple[int, int]]) -> set[tuple[int, int]]:
-    w, h = 0, signal.beacon_dist
-    x, y = signal.coords
-    if not y - signal.beacon_dist <= target <= y + signal.beacon_dist:
-        return seen
-
-    while h != -1:
-        if target in (y + h, y - h):
-            seen.update(
-                [
-                    (x + w, y + h),
-                    (x - w, y - h),
-                    (x - w, y + h),
-                    (x + w, y - h),
-                ]
-            )
-            for i in range(x - w, x + w):
-                seen.update([(i, y + h), (i, y - h)])
-        w += 1
-        h -= 1
-
-    return seen
 
 
 @input_injection
 def main(_input: str) -> str:
     test = _input.startswith("Sensor at x=2")
     target = 10 if test else 2000000
-    grid = Sparse(default=".")
-    signals = []
+
+    shape = Polygon()
+    min_x = 0
+    max_x = 0
 
     for line in _input.splitlines():
         sx, sy, bx, by = utils.ints(line)
-        beacon_coords = (bx, by)
-        signal = Signal(x=sx, y=sy)
-        signal.beacon_dist = utils.manhattan_dist(signal.coords, beacon_coords)
-        signals.append(signal)
-        grid.update(signal.coords, "S")
-        grid.update(beacon_coords, "B")
+        md = abs(sx - bx) + abs(sy - by)
 
-    seen: set[tuple[int, int]] = set()
-    for signal in signals:
-        add_seen(target, signal, seen)
+        min_x = min(min_x, sx - md)
+        max_x = max(max_x, sx + md)
 
-    row_seen = set([s for s in seen if s[1] == target])
-    row_other = grid.get_row_coords(target)
+        shape = unary_union(
+            [
+                shape,
+                Polygon(
+                    [
+                        (sx, sy + md),
+                        (sx - md, sy),
+                        (sx, sy - md),
+                        (sx + md, sy),
+                    ]
+                ),
+            ]
+        )
 
-    result = len(row_seen) - len(row_other)
-
-    return str(result)
+    # cut out one row as rect and get the area
+    subset_rectangle = clip_by_rect(shape, min_x, target, max_x, target + 1)
+    return str(int(subset_rectangle.area))
 
 
 if __name__ == "__main__":

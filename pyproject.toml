@@ -14,6 +14,7 @@ beautifulsoup4 = "^4.11.1"
 numpy = "^1.23.5"
 termcolor = "^2.1.1"
 pandas = "^1.5.2"
+shapely = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
