@@ -16,7 +16,7 @@ class Signal(Coords):
     beacon_dist: int = 0
 
 
-def get_ranges(target: int, signal: Signal, global_seen: collections.defaultdict[int, set[SeenType]]) -> None:
+def get_ranges(target: int, signal: Signal, seen_ranges: collections.defaultdict[int, set[SeenType]]) -> None:
     w, h = 0, signal.beacon_dist
     x, y = signal.coords
     while h >= -signal.beacon_dist:
@@ -30,7 +30,7 @@ def get_ranges(target: int, signal: Signal, global_seen: collections.defaultdict
             if (low_x, high_x) in ((0, 0), (target, target)):
                 raise FastForward
 
-            seen = global_seen.get(y_value) or set()
+            seen = seen_ranges.get(y_value) or set()
 
             for r in list(seen):
                 check = utils.overlaps([low_x, high_x], [*r])
@@ -41,7 +41,7 @@ def get_ranges(target: int, signal: Signal, global_seen: collections.defaultdict
 
             seen.add((low_x, high_x))
 
-            global_seen[y_value] = seen
+            seen_ranges[y_value] = seen
         except FastForward:
             pass
 
@@ -66,12 +66,12 @@ def main(_input: str) -> str:
         grid.update(signal.coords, "S")
         grid.update(beacon_coords, "B")
 
-    global_seen: collections.defaultdict[int, set[SeenType]] = collections.defaultdict()
+    seen_ranges: collections.defaultdict[int, set[SeenType]] = collections.defaultdict()
     for signal in signals:
-        get_ranges(target, signal, global_seen)
+        get_ranges(target, signal, seen_ranges)
 
     if test:
-        for debug_y, seen in global_seen.items():
+        for debug_y, seen in seen_ranges.items():
             for debug_x_range in seen:
                 for debug_x in range(debug_x_range[0], debug_x_range[1] + 1):
                     debug_coords = (debug_x, debug_y)
@@ -81,7 +81,7 @@ def main(_input: str) -> str:
         print(grid.output)
 
     for y in range(grid.y_min, grid.y_max + 1):
-        seen = global_seen.get(y) or set()
+        seen = seen_ranges.get(y) or set()
         x = 0
         while x <= target:
             try:
